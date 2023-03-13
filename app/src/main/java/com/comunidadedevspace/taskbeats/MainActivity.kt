@@ -9,7 +9,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val taskList:RecyclerView = findViewById(R.id.recycleView_task_List)
+        val taskList:RecyclerView = findViewById(R.id.RecycleView_task_List)
 
 
     }

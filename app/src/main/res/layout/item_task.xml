@@ -8,12 +8,14 @@
     android:layout_marginStart="8dp">
     
     <TextView
+        android:id="@+id/TaskTitle"
         tools:text="Title Sample"
         android:textSize="18sp"
         style="bold"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
     <TextView
+        android:id="@+id/TaskDescription"
         android:layout_marginTop="8dp"
         android:text="Description long to teste my UI a little bitmore"
         android:layout_width="match_parent"
