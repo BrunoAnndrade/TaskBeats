@@ -11,6 +11,12 @@ class MainActivity : AppCompatActivity() {
 
         val taskList:RecyclerView = findViewById(R.id.RecycleView_task_List)
 
+        val list = listOf<String>("title 1", "title 2", "title 3", "title 4")
+        val adapter = TaskList_Adapter(list)
+
+        taskList.adapter = adapter
+
+
 
     }
 }
