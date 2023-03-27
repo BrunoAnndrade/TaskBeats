@@ -6,7 +6,11 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class TaskList_Adapter (private val listTask:List<Task>):
+class TaskList_Adapter (
+    private val listTask:List<Task>,
+    // passei a função aqui e coloquei esse -> Unit por ser função sem retorno
+    private val openTaskDetailView:(task:Task) -> Unit
+):
     RecyclerView.Adapter<TaskListViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskListViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -16,9 +20,8 @@ class TaskList_Adapter (private val listTask:List<Task>):
     }
     // atrelar meu viewholder com o recycleview
     override fun onBindViewHolder(holder: TaskListViewHolder, position: Int) {
-        val task = listTask[position]
 
-        holder.bind(task)
+        holder.bind(listTask[position], openTaskDetailView)
     }
     //tamanho da minha lista
     override fun getItemCount(): Int {
@@ -26,14 +29,23 @@ class TaskList_Adapter (private val listTask:List<Task>):
     }
 }
 
-class TaskListViewHolder (view: View) : RecyclerView.ViewHolder(view){
+class TaskListViewHolder (
+    private val TaskView: View
+) : RecyclerView.ViewHolder(TaskView){
 
-    val Task_Title = view.findViewById<TextView>(R.id.TaskTitle)
-    val Task_Description = view.findViewById<TextView>(R.id.TaskDescription)
+    val TaskTitle:TextView= TaskView.findViewById(R.id.tv_TaskTitle)
+    val TaskDescription:TextView= TaskView.findViewById(R.id.tv_TaskDescription)
 
-    fun bind (task:Task){
-        Task_Title.text = task.title
-        Task_Description.text = task.Description
+    fun bind (
+        task:Task,
+        openTaskDetailView:(task:Task) -> Unit
+    ){
+        TaskTitle.text = task.title
+        TaskDescription.text = task.Description
+
+        TaskView.setOnClickListener{
+            openTaskDetailView.invoke(task)
+        }
 
     }
 
