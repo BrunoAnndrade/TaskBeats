@@ -29,10 +29,15 @@ class MainActivity : AppCompatActivity() {
         taskList.adapter = adapter
     }
 
+    //Abrir nova página
+    fun openTaskDetailView(task: Task) {
+        val intent = Intent(this, Activity_Detail::class.java )
+            .apply { putExtra(Activity_Detail.TASK_DETAIL_EXTRA, task.title)}
+        startActivity(intent)
+    }
+
 }
 
-fun openTaskDetailView(task: Task) {
-    val intent = Intent(this, Activity_Detail::class.java)
 
-    startActvity(intent)
-}
+
+
