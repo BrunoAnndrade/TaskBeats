@@ -10,15 +10,14 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
         //kotlin
         val list = listOf<Task>(
             Task("Estudar", "Estudar programação kotlin"),
-            Task("Estudar", "Estudar programação kotlin"),
-            Task("Estudar", "Estudar programação kotlin"),
-            Task("Estudar", "Estudar programação kotlin"),
-            Task("Estudar", "Estudar programação kotlin"),
-            Task("Estudar", "Estudar programação kotlin"),
+            Task("Trabalhar", "trabalhando como vendedor"),
+            Task("Fun", "Jogando um pouco"),
+            Task("Ler", "Ler 20 páginas por dia"),
+            Task("Linguagem", "Assistir algo em ingles"),
+            Task("meditar", "meditar na playlist"),
         )
 
         //adapter
