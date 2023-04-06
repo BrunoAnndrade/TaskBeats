@@ -17,12 +17,12 @@ class TaskList_Adapter (
 
         return TaskListViewHolder(view)
     }
-    // atrelar meu viewholder com o recycleview
+    //toggle my view-holder with recyclerview
     override fun onBindViewHolder(holder: TaskListViewHolder, position: Int) {
 
         holder.bind(listTask[position], openNewTaskDetailView)
     }
-    //tamanho da minha lista
+    //Size of my list
     override fun getItemCount(): Int {
         return listTask.size
     }

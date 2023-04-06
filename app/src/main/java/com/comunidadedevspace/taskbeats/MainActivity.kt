@@ -10,7 +10,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        //kotlin
+        //kotlin list of task
         val list = listOf<Task>(
             Task("Estudar", "Estudar programação kotlin"),
             Task("Trabalhar", "trabalhando como vendedor"),
@@ -23,15 +23,15 @@ class MainActivity : AppCompatActivity() {
         //adapter
         val adapter = TaskList_Adapter(list,::openTaskDetailView)
 
-        //recycleview
+        //recyclerview
         val taskList: RecyclerView = findViewById(R.id.RecycleView_task_List)
         taskList.adapter = adapter
     }
 
-    //Abrir nova página
+    //Open new page
     fun openTaskDetailView(task: Task) {
-        val intent = Intent(this, Activity_Detail::class.java )
-            .apply { putExtra(Activity_Detail.TASK_DETAIL_EXTRA, task.title)}
+        val intent = Activity_Detail.start(this, task)
+
         startActivity(intent)
     }
 
