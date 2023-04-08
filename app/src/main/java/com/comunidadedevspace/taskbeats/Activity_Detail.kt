@@ -37,6 +37,7 @@ class Activity_Detail : AppCompatActivity() {
         tvtitle.text = title
     }
 
+    //Menu delete
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater: MenuInflater = menuInflater
         inflater.inflate(R.menu.menu_task_detail, menu)
