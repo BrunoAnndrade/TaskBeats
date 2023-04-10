@@ -1,11 +1,25 @@
 package com.comunidadedevspace.taskbeats
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.RecyclerView
 
 class MainActivity : AppCompatActivity() {
+
+
+    //toda vez que chegar nessa tela, ele vai dar um resultado
+    private val startForResult = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ){ result: ActivityResult ->
+        if (result.resultCode == RESULT_OK){
+            println("resultado aqui")
+        }
+
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -32,7 +46,7 @@ class MainActivity : AppCompatActivity() {
     fun openTaskDetailView(task: Task) {
         val intent = Activity_Detail.start(this, task)
 
-        startActivity(intent)
+        startForResult.launch(intent)
     }
 
 }
