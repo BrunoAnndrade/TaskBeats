@@ -11,6 +11,8 @@ import android.view.MenuItem
 import android.widget.TextView
 
 class Activity_Detail : AppCompatActivity() {
+    //declarei a task aqui avisando que a tarefa vai ser iniciada depois
+    private lateinit var task: Task
     companion object{
         private const val TASK_DETAIL_EXTRA = "task.title.extra.detail"
 
@@ -28,9 +30,10 @@ class Activity_Detail : AppCompatActivity() {
 
         // Recuperate task
         // Essa interrogação significa que a task pode ou não estar ali
-        val task:Task? = intent.getSerializableExtra(TASK_DETAIL_EXTRA) as Task?
-        // se não passar nenhuma tarefa o app vai dar um crash
-        requireNotNull(task)
+        // se não passar nenhuma tarefa o app vai dar um crash por isso requireNoteNull
+        task = requireNotNull(intent.getSerializableExtra(TASK_DETAIL_EXTRA) as Task?)
+
+
 
         // Recuperate textView
         val tvtitle:TextView = findViewById(R.id.tv_TaskTitle_Detail)
@@ -52,7 +55,9 @@ class Activity_Detail : AppCompatActivity() {
                 //return main activity com o resultado de delete
                 val intent = Intent()
                     .apply {
-                        putExtra("Result_Detail", "Result")
+                        val actionType = ActionType.DELETE
+                        val taskAction = TaskAction(task, actionType)
+                        putExtra("TASK_ACTION_RESULT", taskAction)
                     }
                 setResult(Activity.RESULT_OK, intent)
                 finish()
