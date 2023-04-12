@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
     private val adapter = TaskList_Adapter(::openTaskDetailView)
 
 
-    //toda vez que chegar nessa tela, ele vai dar esse resultado
+    //toda vez que chegar nessa tela, ele vai dar rodar esse resultado
     private val startForResult = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ){ result: ActivityResult ->
@@ -75,7 +75,7 @@ data class TaskAction(
     val ActionType:ActionType
 ): Serializable
 
-//a ação vai retornar o valor pra essa pagina
+//a ação variavel vai retornar o valor pra essa pagina
 const val TASK_ACTION_RESULT = "TASK_ACTION_RESULT"
 
 
