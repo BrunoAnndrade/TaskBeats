@@ -13,9 +13,12 @@ import android.widget.TextView
 class Activity_Detail : AppCompatActivity() {
     //declarei a task aqui avisando que a tarefa vai ser iniciada depois
     private lateinit var task: Task
+
+    //companium pra definir uma compartilhamento entre todas instâncias
     companion object{
         private const val TASK_DETAIL_EXTRA = "task.title.extra.detail"
 
+        //Abrir activity detail quando for chamada essa função
         fun start(context:Context, task: Task):Intent{
             val intent = Intent(context, Activity_Detail::class.java )
                 .apply { putExtra(TASK_DETAIL_EXTRA, task)}
@@ -27,13 +30,10 @@ class Activity_Detail : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
 
-
         // Recuperate task
         // Essa interrogação significa que a task pode ou não estar ali
         // se não passar nenhuma tarefa o app vai dar um crash por isso requireNoteNull
         task = requireNotNull(intent.getSerializableExtra(TASK_DETAIL_EXTRA) as Task?)
-
-
 
         // Recuperate textView
         val tvtitle:TextView = findViewById(R.id.tv_TaskTitle_Detail)
@@ -43,12 +43,14 @@ class Activity_Detail : AppCompatActivity() {
     }
 
     //Ciclo de vida da activity
+    // inflar meu XML(menu)
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater: MenuInflater = menuInflater
         inflater.inflate(R.menu.menu_task_detail, menu)
         return true
     }
 
+    //ação ao clicar em uma opção do menu
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.delete_task -> {

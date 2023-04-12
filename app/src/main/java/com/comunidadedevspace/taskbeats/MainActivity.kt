@@ -21,6 +21,8 @@ class MainActivity : AppCompatActivity() {
         Task(5,"meditar", "meditar na playlist"),
     )
 
+    private val adapter = TaskList_Adapter(::openTaskDetailView)
+
 
     //toda vez que chegar nessa tela, ele vai dar esse resultado
     private val startForResult = registerForActivityResult(
@@ -36,7 +38,8 @@ class MainActivity : AppCompatActivity() {
             list.remove(task)
 
             //atualizando adapter
-            
+            adapter.submit(list)
+
         }
 
     }
@@ -45,7 +48,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         //adapter
-        val adapter = TaskList_Adapter(list,::openTaskDetailView)
+        adapter.submit(list)
 
         //recyclerview
         val taskList: RecyclerView = findViewById(R.id.RecycleView_task_List)
@@ -53,7 +56,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     //Open new page
-    fun openTaskDetailView(task: Task) {
+    private fun openTaskDetailView(task: Task) {
         val intent = Activity_Detail.start(this, task)
 
         startForResult.launch(intent)

@@ -6,27 +6,36 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class TaskList_Adapter (
-    private val listTask:List<Task>,
-    private val openNewTaskDetailView:(task:Task) -> Unit
-):
-    RecyclerView.Adapter<TaskListViewHolder>() {
+class TaskList_Adapter (private val openNewTaskDetailView:(task:Task) -> Unit)
+    :RecyclerView.Adapter<TaskListViewHolder>() {
+
+    //Essa lista não existe mas vai existir e algum momento
+    private var listTask:List<Task> = emptyList()
+
+    fun submit(list:List<Task>){
+        listTask = list
+        notifyDataSetChanged()
+    }
+
+    //criando uma view
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskListViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_task, parent, false)
 
         return TaskListViewHolder(view)
     }
-    //toggle my view-holder with recyclerview
+    //atrelando view-holder com recyclerview
     override fun onBindViewHolder(holder: TaskListViewHolder, position: Int) {
 
         holder.bind(listTask[position], openNewTaskDetailView)
     }
-    //Size of my list
+    //tamanho da lista
     override fun getItemCount(): Int {
         return listTask.size
     }
 }
+
+//recuperando o modelo de view criado no XML
 class TaskListViewHolder (
     private val TaskView: View
 ) : RecyclerView.ViewHolder(TaskView){
@@ -41,6 +50,7 @@ class TaskListViewHolder (
         TaskTitle.text = task.title
         TaskDescription.text = task.Description
 
+        //quando clicar em uma view vai abrir o Activity detail
         TaskView.setOnClickListener{
             openNewTaskDetailView.invoke(task)
         }
