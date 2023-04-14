@@ -4,6 +4,9 @@ import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import android.widget.ImageView
+import android.widget.LinearLayout
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.RecyclerView
@@ -21,6 +24,8 @@ class MainActivity : AppCompatActivity() {
         Task(5,"meditar", "meditar na playlist"),
     )
 
+    private lateinit var ctnContent: LinearLayout
+
     private val adapter = TaskList_Adapter(::openTaskDetailView)
 
 
@@ -37,6 +42,11 @@ class MainActivity : AppCompatActivity() {
             //Removendo item de lista Kotlin
             list.remove(task)
 
+            //quando a lista estiver vazia aparece a imagem de vazio
+            if(list.size ==0){
+                ctnContent.visibility = View.VISIBLE
+            }
+
             //atualizando adapter
             adapter.submit(list)
 
@@ -46,6 +56,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        //recuperando layout para quando não tiver nenhuma task
+        ctnContent = findViewById(R.id.ctn_content)
 
         //adapter
         adapter.submit(list)
