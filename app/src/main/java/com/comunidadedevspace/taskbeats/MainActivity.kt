@@ -24,9 +24,11 @@ class MainActivity : AppCompatActivity() {
         Task(5,"meditar", "meditar na playlist"),
     )
 
+    //iniciar o layout depois para configurar quando não tiver nenhuma task
     private lateinit var ctnContent: LinearLayout
 
-    private val adapter = TaskList_Adapter(::openTaskDetailView)
+    //colocando a função de abrir o detalhe da task no adapter
+    private val adapter = TaskListAdapter(::openTaskDetailView)
 
 
     //toda vez que chegar nessa tela, ele vai dar rodar esse resultado
@@ -60,7 +62,7 @@ class MainActivity : AppCompatActivity() {
         //recuperando layout para quando não tiver nenhuma task
         ctnContent = findViewById(R.id.ctn_content)
 
-        //adapter
+        //colocando minha lista no adapter
         adapter.submit(list)
 
         //recyclerview
@@ -83,6 +85,7 @@ sealed class ActionType:Serializable {
     object CREATE:ActionType()
 }
 
+//criando ações para implementar na task
 data class TaskAction(
     val task: Task,
     val ActionType:ActionType

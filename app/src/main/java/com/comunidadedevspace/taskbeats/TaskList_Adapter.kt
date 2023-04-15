@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class TaskList_Adapter (private val openNewTaskDetailView:(task:Task) -> Unit)
+class TaskListAdapter (private val openNewTaskDetailView:(task:Task) -> Unit)
     :RecyclerView.Adapter<TaskListViewHolder>() {
 
     //Essa lista não existe mas vai existir e algum momento
