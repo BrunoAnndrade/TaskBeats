@@ -3,6 +3,7 @@ package com.comunidadedevspace.taskbeats
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.icu.text.CaseMap.Title
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
@@ -20,7 +21,7 @@ class TaskDetailActivity : AppCompatActivity() {
 
 
     //usando essa view para aparecer uma msg na tela
-    private lateinit var tvTitle:TextView
+    private lateinit var btnDone:Button
 
     //companium pra definir uma compartilhamento entre todas instâncias
     companion object {
@@ -47,15 +48,38 @@ class TaskDetailActivity : AppCompatActivity() {
         // Recuperando campo xml
         val edtTitle = findViewById<EditText>(R.id.edt_task_title)
         val edtDescription = findViewById<EditText>(R.id.edt_task_description)
-        val btnDone = findViewById<Button>(R.id.btn_done)
+        btnDone = findViewById<Button>(R.id.btn_done)
+
+        //se tiver um tarefa criada, ao clicar ele vai aparecer a tarefa
+        if(task != null){
+            edtTitle.setText(task!!.title)
+            edtDescription.setText(task!!.Description)
+        }
+
+        btnDone.setOnClickListener{
+            val title = edtTitle.text.toString()
+            val desc = edtDescription.text.toString()
+
+            if(title.isNotEmpty() && desc.isNotEmpty()){
+                addNewTask(title, desc)
+            }else {
+                showMessage(it, "Fields are required")
+            }
+
+        }
 
 
-        tvTitle = findViewById(R.id.tv_TaskTitleDetail)
+      //  tvTitle = findViewById(R.id.tv_TaskTitleDetail)
 
         // Setar a nova página na tela
         // esse "?:" se não tiver o titilo da tarefa, vai a msg
-        tvTitle.text = task?.title ?: "Adicione uma tarefa"
+       // tvTitle.text = task?.title ?: "Adicione uma tarefa"
 
+    }
+
+    private fun addNewTask(title: String, description:String){
+        val newTask = Task(0, title, description)
+        returnAction(newTask, ActionType.CREATE)
     }
 
     //Ciclo de vida da activity
@@ -74,22 +98,25 @@ class TaskDetailActivity : AppCompatActivity() {
                 //So vai passar por esse código se existir uma tarefa
                 if(task != null) {
                     //return main activity com o resultado de delete
-                    val intent = Intent()
-                        .apply {
-                            val actionType = ActionType.DELETE
-                            val taskAction = TaskAction(task!!, actionType)
-                            putExtra("TASK_ACTION_RESULT", taskAction)
-                        }
-                    setResult(Activity.RESULT_OK, intent)
-                    finish()
-
+                    returnAction(task!!, ActionType.DELETE)
                 }else {
-                    showMessage(tvTitle, "Item not found")
+                    showMessage(btnDone, "Item not found")
                 }
                 true
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun returnAction(task:Task, actionType: ActionType){
+        val intent = Intent()
+            .apply {
+                val taskAction = TaskAction(task, actionType.name)
+                putExtra("TASK_ACTION_RESULT", taskAction)
+            }
+        setResult(Activity.RESULT_OK, intent)
+        finish()
+
     }
 
     //função para mostrar uma messagem na tela

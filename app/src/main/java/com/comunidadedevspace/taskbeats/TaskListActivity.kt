@@ -40,25 +40,45 @@ class TaskListActivity : AppCompatActivity() {
             val taskAction = data?.getSerializableExtra(TASK_ACTION_RESULT) as TaskAction
             val task: Task = taskAction.task
 
-            //criando nova lista para conseguir tirar um item da lista
-            val newList = arrayListOf<Task>()
-                .apply { addAll(list) }
 
-            //Removendo item de lista Kotlin
-            newList.remove(task)
-            //mensagem para quando deletar uma tarefa
-            showMessage(ctnContent,"Tarefa deletada: ${task.title}")
+            //so vai acontecer ação de deletar se realmente for um actiontype delete
+            if(taskAction.ActionType == ActionType.DELETE.name){
+                //criando nova lista para conseguir tirar um item da lista
+                val newList = arrayListOf<Task>()
+                    .apply { addAll(list) }
 
-            //quando a lista estiver vazia aparece a imagem de vazio
-            if (newList.size == 0) {
-                ctnContent.visibility = View.VISIBLE
+                //Removendo item de lista Kotlin
+                newList.remove(task)
+
+                showMessage(ctnContent,"Tarefa deletada: ${task.title}")
+
+                //quando a lista estiver vazia aparece a imagem de vazio
+
+                if (newList.size == 0) {
+                    ctnContent.visibility = View.VISIBLE
+                }
+
+                //atualizando alterações feitas no adapter
+                adapter.submitList(newList)
+
+                //atualizando a lista anterior novamente
+                list = newList
+
+            } else if(taskAction.ActionType == ActionType.CREATE.name){
+                val newList = arrayListOf<Task>()
+                    .apply { addAll(list) }
+
+                newList.add(task)
+                showMessage(ctnContent,"Tarefa added: ${task.title}")
+
+                //atualizando alterações feitas no adapter
+                adapter.submitList(newList)
+
+                //atualizando a lista anterior novamente
+                list = newList
             }
 
-            //atualizando alterações feitas no adapter
-            adapter.submitList(newList)
 
-            //atualizando a lista anterior novamente
-            list = newList
 
         }
 
@@ -110,16 +130,16 @@ class TaskListActivity : AppCompatActivity() {
 }
 
 //Ações serializada (porque vai de uma tela para outra)
-sealed class ActionType : Serializable {
-    object DELETE : ActionType()
-    object UPDATE : ActionType()
-    object CREATE : ActionType()
+enum class ActionType {
+    DELETE,
+    UPDATE,
+    CREATE,
 }
 
 //criando ações para implementar na task
 data class TaskAction(
     val task: Task,
-    val ActionType: ActionType
+    val ActionType: String
 ) : Serializable
 
 //a ação variavel vai retornar o valor pra essa pagina
