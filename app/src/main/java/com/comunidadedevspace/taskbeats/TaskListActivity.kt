@@ -30,7 +30,7 @@ class TaskListActivity : AppCompatActivity() {
     private val adapter = TaskListAdapter(::onListItemClicked)
 
 
-    //toda vez que chegar nessa tela, ele vai dar rodar esse resultado
+    //usando API android para atualizar a página
     private val startForResult = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result: ActivityResult ->
