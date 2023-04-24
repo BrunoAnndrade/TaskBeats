@@ -29,7 +29,6 @@ class TaskListActivity : AppCompatActivity() {
     //colocando a função de abrir o detalhe da task no adapter
     private val adapter = TaskListAdapter(::onListItemClicked)
 
-
     //usando API android para atualizar a página
     private val startForResult = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
@@ -39,7 +38,6 @@ class TaskListActivity : AppCompatActivity() {
             val data = result.data
             val taskAction = data?.getSerializableExtra(TASK_ACTION_RESULT) as TaskAction
             val task: Task = taskAction.task
-
 
             //so vai acontecer ação de deletar se realmente for um actiontype delete
             if(taskAction.ActionType == ActionType.DELETE.name){
@@ -53,7 +51,6 @@ class TaskListActivity : AppCompatActivity() {
                 showMessage(ctnContent,"Tarefa deletada: ${task.title}")
 
                 //quando a lista estiver vazia aparece a imagem de vazio
-
                 if (newList.size == 0) {
                     ctnContent.visibility = View.VISIBLE
                 }
@@ -77,11 +74,7 @@ class TaskListActivity : AppCompatActivity() {
                 //atualizando a lista anterior novamente
                 list = newList
             }
-
-
-
         }
-
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -96,6 +89,7 @@ class TaskListActivity : AppCompatActivity() {
 
         //recyclerview
         val taskList: RecyclerView = findViewById(R.id.RecycleView_task_List)
+        //atrelando xml recycleView + adapter
         taskList.adapter = adapter
 
         //botão pra add nova task
@@ -103,7 +97,6 @@ class TaskListActivity : AppCompatActivity() {
         fab.setOnClickListener {
             //null porque ainda não tem a tarefa criada
             openTaskListDetail(null)
-
         }
     }
 
@@ -112,7 +105,6 @@ class TaskListActivity : AppCompatActivity() {
         Snackbar.make(view, message, Snackbar.LENGTH_LONG)
             .setAction("Action", null)
             .show()
-
     }
 
     //Open new page
@@ -126,7 +118,6 @@ class TaskListActivity : AppCompatActivity() {
         val intent = TaskDetailActivity.start(this, task)
         startForResult.launch(intent)
     }
-
 }
 
 //Ações serializada (porque vai de uma tela para outra)
@@ -144,5 +135,3 @@ data class TaskAction(
 
 //a ação variavel vai retornar o valor pra essa pagina
 const val TASK_ACTION_RESULT = "TASK_ACTION_RESULT"
-
-
