@@ -15,7 +15,6 @@ class TaskListAdapter(private val openTaskListDetail: (task: Task) -> Unit) :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskListViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_task, parent, false)
-
         return TaskListViewHolder(view)
     }
 
