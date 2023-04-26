@@ -19,7 +19,6 @@ class TaskDetailActivity : AppCompatActivity() {
     //Essa task pode existir ou não, por isso o "?" e null
     private var task: Task? = null
 
-
     //usando essa view para aparecer uma msg na tela
     private lateinit var btnDone:Button
 
@@ -40,18 +39,17 @@ class TaskDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_task_detail)
 
-        // Recuperate task
-        // Essa interrogação significa que a task pode ou não estar ali
+        // Recuperando xml
         // se não passar nenhuma tarefa o app vai dar um crash por isso requireNoteNull
         task = intent.getSerializableExtra(TASK_DETAIL_EXTRA) as Task?
 
         // Recuperando campo xml
         val edtTitle = findViewById<EditText>(R.id.edt_task_title)
         val edtDescription = findViewById<EditText>(R.id.edt_task_description)
-        btnDone = findViewById<Button>(R.id.btn_done)
+        btnDone = findViewById(R.id.btn_done)
 
         //se tiver um tarefa criada, ao clicar ele vai aparecer a tarefa
-        if(task != null){
+        if(task != null) {
             edtTitle.setText(task!!.title)
             edtDescription.setText(task!!.Description)
         }
@@ -62,10 +60,9 @@ class TaskDetailActivity : AppCompatActivity() {
 
             if(title.isNotEmpty() && desc.isNotEmpty()){
                 addNewTask(title, desc)
-            }else {
+            } else {
                 showMessage(it, "Fields are required")
             }
-
         }
 
 
@@ -94,12 +91,11 @@ class TaskDetailActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.delete_task -> {
-
                 //So vai passar por esse código se existir uma tarefa
                 if(task != null) {
                     //return main activity com o resultado de delete
                     returnAction(task!!, ActionType.DELETE)
-                }else {
+                } else {
                     showMessage(btnDone, "Item not found")
                 }
                 true
@@ -116,7 +112,6 @@ class TaskDetailActivity : AppCompatActivity() {
             }
         setResult(Activity.RESULT_OK, intent)
         finish()
-
     }
 
     //função para mostrar uma messagem na tela

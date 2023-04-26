@@ -40,15 +40,13 @@ class TaskListActivity : AppCompatActivity() {
             val task: Task = taskAction.task
 
             //so vai acontecer ação de deletar se realmente for um actiontype delete
-            if(taskAction.ActionType == ActionType.DELETE.name){
+            if (taskAction.ActionType == ActionType.DELETE.name) {
                 //criando nova lista para conseguir tirar um item da lista
                 val newList = arrayListOf<Task>()
                     .apply { addAll(list) }
 
-                //Removendo item de lista Kotlin
                 newList.remove(task)
-
-                showMessage(ctnContent,"Tarefa deletada: ${task.title}")
+                showMessage(ctnContent, "Tarefa deletada: ${task.title}")
 
                 //quando a lista estiver vazia aparece a imagem de vazio
                 if (newList.size == 0) {
@@ -57,21 +55,20 @@ class TaskListActivity : AppCompatActivity() {
 
                 //atualizando alterações feitas no adapter
                 adapter.submitList(newList)
-
                 //atualizando a lista anterior novamente
                 list = newList
 
-            } else if(taskAction.ActionType == ActionType.CREATE.name){
+            } else if (taskAction.ActionType == ActionType.CREATE.name) {
                 val newList = arrayListOf<Task>()
                     .apply { addAll(list) }
 
                 newList.add(task)
-                showMessage(ctnContent,"Tarefa added: ${task.title}")
+                showMessage(ctnContent, "Tarefa added: ${task.title}")
+                if (newList.size != 0) {
+                    ctnContent.visibility = View.GONE
+                }
 
-                //atualizando alterações feitas no adapter
                 adapter.submitList(newList)
-
-                //atualizando a lista anterior novamente
                 list = newList
             }
         }
@@ -101,7 +98,7 @@ class TaskListActivity : AppCompatActivity() {
     }
 
     //função para mostrar uma messagem na tela
-    private fun showMessage(view:View, message:String){
+    private fun showMessage(view: View, message: String) {
         Snackbar.make(view, message, Snackbar.LENGTH_LONG)
             .setAction("Action", null)
             .show()
