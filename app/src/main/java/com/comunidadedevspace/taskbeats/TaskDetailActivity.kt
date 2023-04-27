@@ -3,7 +3,6 @@ package com.comunidadedevspace.taskbeats
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.icu.text.CaseMap.Title
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
@@ -12,7 +11,6 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
-import android.widget.TextView
 import com.google.android.material.snackbar.Snackbar
 
 class TaskDetailActivity : AppCompatActivity() {
@@ -59,7 +57,11 @@ class TaskDetailActivity : AppCompatActivity() {
             val desc = edtDescription.text.toString()
 
             if(title.isNotEmpty() && desc.isNotEmpty()){
-                addNewTask(title, desc)
+                if(task == null){
+                    addOrUpdateTask(0,title, desc, ActionType.CREATE)
+                } else {
+                    addOrUpdateTask(task!!.id,title, desc, ActionType.UPDATE)
+                }
             } else {
                 showMessage(it, "Fields are required")
             }
@@ -74,9 +76,14 @@ class TaskDetailActivity : AppCompatActivity() {
 
     }
 
-    private fun addNewTask(title: String, description:String){
-        val newTask = Task(0, title, description)
-        returnAction(newTask, ActionType.CREATE)
+    private fun addOrUpdateTask(
+        id:Int,
+        title: String,
+        description:String,
+        actionType: ActionType
+    ){
+        val newTask = Task(id, title, description)
+        returnAction(newTask, actionType)
     }
 
     //Ciclo de vida da activity

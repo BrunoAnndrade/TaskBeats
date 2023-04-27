@@ -63,13 +63,29 @@ class TaskListActivity : AppCompatActivity() {
                     .apply { addAll(list) }
 
                 newList.add(task)
-                showMessage(ctnContent, "Tarefa added: ${task.title}")
+                showMessage(ctnContent, "Tarefa criada: ${task.title}")
                 if (newList.size != 0) {
                     ctnContent.visibility = View.GONE
                 }
-
                 adapter.submitList(newList)
                 list = newList
+
+            } else if(taskAction.ActionType == ActionType.UPDATE.name) {
+                val newList = arrayListOf<Task>()
+                    .apply { addAll(list) }
+
+                val tempEmptyList = arrayListOf<Task>()
+                list.forEach {
+                    if(it.id == task.id){
+                       val newItem = Task(it.id,task.title,task.Description)
+                        tempEmptyList.add(newItem)
+                    } else {
+                        tempEmptyList.add(it)
+                    }
+                }
+                showMessage(ctnContent, "Tarefa atualizada: ${task.title}")
+                adapter.submitList(tempEmptyList)
+                list = tempEmptyList
             }
         }
     }
@@ -117,7 +133,7 @@ class TaskListActivity : AppCompatActivity() {
     }
 }
 
-//Ações serializada (porque vai de uma tela para outra)
+//CRUD
 enum class ActionType {
     DELETE,
     UPDATE,
