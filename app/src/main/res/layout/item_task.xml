@@ -11,9 +11,7 @@
         android:id="@+id/tv_TaskTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/brown_900"
-        android:textSize="18sp"
-        android:textStyle="bold"
+        style="@style/Title3"
         tools:text="Title Sample" />
 
     <TextView
@@ -22,6 +20,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:text="Description long to teste my UI a little bitmore"
-        android:textColor="@color/brown_700" />
+        style="@style/Body1" />
 
 </LinearLayout>

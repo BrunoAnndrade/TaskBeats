@@ -71,8 +71,6 @@ class TaskListActivity : AppCompatActivity() {
                 list = newList
 
             } else if(taskAction.ActionType == ActionType.UPDATE.name) {
-                val newList = arrayListOf<Task>()
-                    .apply { addAll(list) }
 
                 val tempEmptyList = arrayListOf<Task>()
                 list.forEach {
