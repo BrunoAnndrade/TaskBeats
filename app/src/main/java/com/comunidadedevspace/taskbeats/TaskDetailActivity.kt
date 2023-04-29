@@ -36,6 +36,8 @@ class TaskDetailActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_task_detail)
+        //para aparecer o toolbar no taskDetail
+        setSupportActionBar(findViewById(R.id.toolbar))
 
         // Recuperando xml
         // se não passar nenhuma tarefa o app vai dar um crash por isso requireNoteNull

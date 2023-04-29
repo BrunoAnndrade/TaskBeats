@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">TaskBeats</string>
+    <string name="float_action_button">Float Action Button</string>
+    <string name="empty_list_task">empty list task</string>
 </resources>
