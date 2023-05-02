@@ -104,6 +104,8 @@ class TaskListActivity : AppCompatActivity() {
         val dao = dataBase.taskDao()
         val task = Task(title = "Academia", Description = "treinar 1 hora")
 
+        // isso é porque está na UI e o android não sabe quanto tempo vai levar carregar
+        //sendo assim é necessário colocar o coroutineScope
         CoroutineScope(IO).launch {
             dao.insert(task)
         }
