@@ -2,6 +2,9 @@ package com.comunidadedevspace.taskbeats
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.widget.LinearLayout
 import androidx.activity.result.ActivityResult
@@ -12,26 +15,32 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch
 import java.io.Serializable
 
 class TaskListActivity : AppCompatActivity() {
-    //kotlin list of task
-    //A lista fica aqui para ficar dentro do escopo do startForResult
-    private var list = arrayListOf(
-        Task(0, "Estudar", "Estudar programação kotlin"),
-        Task(1, "Trabalhar", "Trabalhar na loja"),
-        Task(2, "Atividade Física", "Praticar alguma atividade física"),
-        Task(3, "Ler", "Ler 20 páginas por dia"),
-        Task(4, "Linguagem", "Assistir algo em ingles"),
-        Task(5, "Alimentação", "melhorar alimentação"),
-    )
 
     //iniciar o layout depois para configurar quando não tiver nenhuma task
     private lateinit var ctnContent: LinearLayout
 
     //colocando a função de abrir o detalhe da task no adapter
-    private val adapter = TaskListAdapter(::onListItemClicked)
+    private val adapter:TaskListAdapter by lazy {
+        TaskListAdapter (::onListItemClicked)
+    }
+
+    private val dataBase by lazy {
+        Room.databaseBuilder(
+            applicationContext,
+            AppDataBase::class.java, "TaskBeats-DataBase"
+        ).build()
+    }
+
+    private val dao by lazy {
+        dataBase.taskDao()
+    }
+
+
 
     //usando API android para atualizar a página
     private val startForResult = registerForActivityResult(
@@ -43,51 +52,11 @@ class TaskListActivity : AppCompatActivity() {
             val taskAction = data?.getSerializableExtra(TASK_ACTION_RESULT) as TaskAction
             val task: Task = taskAction.task
 
-            //so vai acontecer ação de deletar se realmente for um actiontype delete
-            if (taskAction.ActionType == ActionType.DELETE.name) {
-                //criando nova lista para conseguir tirar um item da lista
-                val newList = arrayListOf<Task>()
-                    .apply { addAll(list) }
-
-                newList.remove(task)
-                showMessage(ctnContent, "Tarefa deletada: ${task.title}")
-
-                //quando a lista estiver vazia aparece a imagem de vazio
-                if (newList.size == 0) {
-                    ctnContent.visibility = View.VISIBLE
-                }
-
-                //atualizando alterações feitas no adapter
-                adapter.submitList(newList)
-                //atualizando a lista anterior novamente
-                list = newList
-
-            } else if (taskAction.ActionType == ActionType.CREATE.name) {
-                val newList = arrayListOf<Task>()
-                    .apply { addAll(list) }
-
-                newList.add(task)
-                showMessage(ctnContent, "Tarefa criada: ${task.title}")
-                if (newList.size != 0) {
-                    ctnContent.visibility = View.GONE
-                }
-                adapter.submitList(newList)
-                list = newList
-
-            } else if(taskAction.ActionType == ActionType.UPDATE.name) {
-
-                val tempEmptyList = arrayListOf<Task>()
-                list.forEach {
-                    if(it.id == task.id){
-                       val newItem = Task(it.id,task.title,task.Description)
-                        tempEmptyList.add(newItem)
-                    } else {
-                        tempEmptyList.add(it)
-                    }
-                }
-                showMessage(ctnContent, "Tarefa atualizada: ${task.title}")
-                adapter.submitList(tempEmptyList)
-                list = tempEmptyList
+            //ação do actiontype
+            when (taskAction.ActionType){
+                ActionType.DELETE.name -> deleteById(task.id)
+                ActionType.CREATE.name -> insertIntoDataBase(task)
+                ActionType.UPDATE.name -> updateIntoDataBase(task)
             }
         }
     }
@@ -95,26 +64,13 @@ class TaskListActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_task_list)
+        //para aparecer o toolbar
+        setSupportActionBar(findViewById(R.id.toolbar))
 
-        val dataBase = Room.databaseBuilder(
-            applicationContext,
-            AppDataBase::class.java, "TaskBeats-DataBase"
-        ).build()
-
-        val dao = dataBase.taskDao()
-        val task = Task(title = "Academia", Description = "treinar 1 hora")
-
-        // isso é porque está na UI e o android não sabe quanto tempo vai levar carregar
-        //sendo assim é necessário colocar o coroutineScope
-        CoroutineScope(IO).launch {
-            dao.insert(task)
-        }
+        listFromDateBase()
 
         //recuperando layout para quando não tiver nenhuma task
         ctnContent = findViewById(R.id.ctn_content)
-
-        //atualizando lista adapter
-        adapter.submitList(list)
 
         //recyclerview
         val taskList: RecyclerView = findViewById(R.id.RecycleView_task_List)
@@ -126,6 +82,43 @@ class TaskListActivity : AppCompatActivity() {
         fab.setOnClickListener {
             //null porque ainda não tem a tarefa criada
             openTaskListDetail(null)
+        }
+    }
+
+    private fun insertIntoDataBase(task: Task){
+        CoroutineScope(IO).launch {
+            dao.insert(task)
+            listFromDateBase()
+        }
+    }
+
+    private fun updateIntoDataBase(task: Task){
+        CoroutineScope(IO).launch {
+            dao.update(task)
+            listFromDateBase()
+        }
+    }
+
+    private fun deleteAll(){
+        CoroutineScope(IO).launch {
+            dao.deleteAll()
+            listFromDateBase()
+        }
+    }
+
+    private fun deleteById(id:Int){
+        CoroutineScope(IO).launch {
+            dao.deleteById(id)
+            listFromDateBase()
+        }
+    }
+
+    private fun listFromDateBase(){
+        // isso é porque está na UI e o android não sabe quanto tempo vai levar carregar
+        //sendo assim é necessário colocar o coroutineScope
+        CoroutineScope(IO).launch {
+            val myDataBaseList: List<Task> = dao.getAll()
+            adapter.submitList(myDataBaseList)
         }
     }
 
@@ -147,6 +140,24 @@ class TaskListActivity : AppCompatActivity() {
         val intent = TaskDetailActivity.start(this, task)
         startForResult.launch(intent)
     }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        val inflater: MenuInflater = menuInflater
+        inflater.inflate(R.menu.menu_task_list, menu)
+        return true
+    }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.delete_all_task -> {
+              //deletar todas as tarefas
+                deleteAll()
+
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
 }
 
 //CRUD
