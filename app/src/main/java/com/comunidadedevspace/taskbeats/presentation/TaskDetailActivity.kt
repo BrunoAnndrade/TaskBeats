@@ -90,7 +90,7 @@ class TaskDetailActivity : AppCompatActivity() {
         returnAction(newTask, actionType)
     }
 
-    //Ciclo de vida da activity
+
     // inflar meu XML(menu)
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater: MenuInflater = menuInflater
