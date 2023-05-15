@@ -1,5 +1,6 @@
 package com.comunidadedevspace.taskbeats.data
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
@@ -14,7 +15,7 @@ interface TaskDao {
     fun insert(task: Task)
 
     @Query("Select * from task")
-    fun getAll():List<Task>
+    fun getAllLiveData():LiveData<List<Task>>
 
     //UPDATE NECESSARIO ENCONTRAR A TAREFA
 

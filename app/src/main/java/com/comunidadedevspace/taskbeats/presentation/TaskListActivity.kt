@@ -9,17 +9,13 @@ import android.view.View
 import android.widget.LinearLayout
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.view.isEmpty
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
-import androidx.room.Room
 import com.comunidadedevspace.taskbeats.R
-import com.comunidadedevspace.taskbeats.data.AppDataBase
 import com.comunidadedevspace.taskbeats.data.Task
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.Dispatchers.Main
-import kotlinx.coroutines.launch
 import java.io.Serializable
 
 class TaskListActivity : AppCompatActivity() {
@@ -28,22 +24,13 @@ class TaskListActivity : AppCompatActivity() {
     private lateinit var ctnContent: LinearLayout
 
     //colocando a função de abrir o detalhe da task no adapter
-    private val adapter:TaskListAdapter by lazy {
-        TaskListAdapter (::onListItemClicked)
+    private val adapter: TaskListAdapter by lazy {
+        TaskListAdapter(::onListItemClicked)
     }
 
-    private val dataBase by lazy {
-        Room.databaseBuilder(
-            applicationContext,
-            AppDataBase::class.java, "TaskBeats-DataBase"
-        ).build()
+    private val viewModel: TaskListViewModel by lazy {
+        TaskListViewModel.create(application)
     }
-
-    private val dao by lazy {
-        dataBase.taskDao()
-    }
-
-
 
     //usando API android para atualizar a página
     private val startForResult = registerForActivityResult(
@@ -53,14 +40,8 @@ class TaskListActivity : AppCompatActivity() {
             //pegando resultado
             val data = result.data
             val taskAction = data?.getSerializableExtra(TASK_ACTION_RESULT) as TaskAction
-            val task: Task = taskAction.task
 
-            //ação do actiontype
-            when (taskAction.ActionType){
-                ActionType.DELETE.name -> deleteById(task.id)
-                ActionType.CREATE.name -> insertIntoDataBase(task)
-                ActionType.UPDATE.name -> updateIntoDataBase(task)
-            }
+            viewModel.execute(taskAction)
         }
     }
 
@@ -70,7 +51,6 @@ class TaskListActivity : AppCompatActivity() {
         //para aparecer o toolbar
         setSupportActionBar(findViewById(R.id.toolbar))
 
-        listFromDateBase()
 
         //recuperando layout para quando não tiver nenhuma task
         ctnContent = findViewById(R.id.ctn_content)
@@ -86,43 +66,38 @@ class TaskListActivity : AppCompatActivity() {
             //null porque ainda não tem a tarefa criada
             openTaskListDetail(null)
         }
+
     }
 
-    private fun insertIntoDataBase(task: Task){
-        CoroutineScope(IO).launch {
-            dao.insert(task)
-            listFromDateBase()
-        }
-    }
+    /* Colocar a inicialização do banco de dados no onStart() ajuda a evitar a exibição de uma
+     tela vazia ou com dados ausentes quando a atividade é retomada após estar em segundo plano.*/
+    override fun onStart() {
+        super.onStart()
 
-    private fun updateIntoDataBase(task: Task){
-        CoroutineScope(IO).launch {
-            dao.update(task)
-            listFromDateBase()
-        }
+        listFromDateBase()
     }
 
     private fun deleteAll(){
-        CoroutineScope(IO).launch {
-            dao.deleteAll()
-            listFromDateBase()
-        }
+        val taskAction = TaskAction(null, ActionType.DELETE_ALL.name)
+        viewModel.execute(taskAction)
     }
 
-    private fun deleteById(id:Int){
-        CoroutineScope(IO).launch {
-            dao.deleteById(id)
-            listFromDateBase()
-        }
-    }
 
-    private fun listFromDateBase(){
-        // isso é porque está na UI e o android não sabe quanto tempo vai levar carregar
-        //sendo assim é necessário colocar o coroutineScope
-        CoroutineScope(IO).launch {
-            val myDataBaseList: List<Task> = dao.getAll()
-            adapter.submitList(myDataBaseList)
+
+    private fun listFromDateBase() {
+
+        //Observer
+        val listObserver = Observer<List<Task>> { listTasks ->
+            if(listTasks.isEmpty()){
+                ctnContent.visibility = View.VISIBLE
+            } else {
+                ctnContent.visibility = View.GONE
+            }
+            adapter.submitList(listTasks)
         }
+        //Live Data
+        //toda vez que tiver uma alteração na lista , ele vai observar e alterar
+        viewModel.taskListLiveData.observe(this@TaskListActivity, listObserver)
     }
 
     //função para mostrar uma messagem na tela
@@ -149,14 +124,16 @@ class TaskListActivity : AppCompatActivity() {
         inflater.inflate(R.menu.menu_task_list, menu)
         return true
     }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.delete_all_task -> {
-              //deletar todas as tarefas
+                //deletar todas as tarefas
                 deleteAll()
 
                 true
             }
+
             else -> super.onOptionsItemSelected(item)
         }
     }
@@ -166,13 +143,14 @@ class TaskListActivity : AppCompatActivity() {
 //CRUD
 enum class ActionType {
     DELETE,
+    DELETE_ALL,
     UPDATE,
     CREATE,
 }
 
 //criando ações para implementar na task
 data class TaskAction(
-    val task: Task,
+    val task: Task?,
     val ActionType: String
 ) : Serializable
 
