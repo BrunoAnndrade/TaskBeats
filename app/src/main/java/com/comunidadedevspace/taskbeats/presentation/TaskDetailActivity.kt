@@ -20,7 +20,7 @@ class TaskDetailActivity : AppCompatActivity() {
     private var task: Task? = null
 
     //usando essa view para aparecer uma msg na tela
-    private lateinit var btnDone:Button
+    private lateinit var btnDone: Button
 
     //companium pra definir uma compartilhamento entre todas instâncias
     companion object {
@@ -51,20 +51,20 @@ class TaskDetailActivity : AppCompatActivity() {
         btnDone = findViewById(R.id.btn_done)
 
         //se tiver um tarefa criada, ao clicar ele vai aparecer a tarefa
-        if(task != null) {
+        if (task != null) {
             edtTitle.setText(task!!.title)
             edtDescription.setText(task!!.Description)
         }
 
-        btnDone.setOnClickListener{
+        btnDone.setOnClickListener {
             val title = edtTitle.text.toString()
             val desc = edtDescription.text.toString()
 
-            if(title.isNotEmpty() && desc.isNotEmpty()){
-                if(task == null){
-                    addOrUpdateTask(0,title, desc, ActionType.CREATE)
+            if (title.isNotEmpty() && desc.isNotEmpty()) {
+                if (task == null) {
+                    addOrUpdateTask(0, title, desc, ActionType.CREATE)
                 } else {
-                    addOrUpdateTask(task!!.id,title, desc, ActionType.UPDATE)
+                    addOrUpdateTask(task!!.id, title, desc, ActionType.UPDATE)
                 }
             } else {
                 showMessage(it, "Fields are required")
@@ -72,20 +72,20 @@ class TaskDetailActivity : AppCompatActivity() {
         }
 
 
-      //  tvTitle = findViewById(R.id.tv_TaskTitleDetail)
+        //  tvTitle = findViewById(R.id.tv_TaskTitleDetail)
 
         // Setar a nova página na tela
         // esse "?:" se não tiver o titilo da tarefa, vai a msg
-       // tvTitle.text = task?.title ?: "Adicione uma tarefa"
+        // tvTitle.text = task?.title ?: "Adicione uma tarefa"
 
     }
 
     private fun addOrUpdateTask(
-        id:Int,
+        id: Int,
         title: String,
-        description:String,
+        description: String,
         actionType: ActionType
-    ){
+    ) {
         val newTask = Task(id, title, description)
         returnAction(newTask, actionType)
     }
@@ -103,7 +103,7 @@ class TaskDetailActivity : AppCompatActivity() {
         return when (item.itemId) {
             R.id.delete_task -> {
                 //So vai passar por esse código se existir uma tarefa
-                if(task != null) {
+                if (task != null) {
                     //return main activity com o resultado de delete
                     returnAction(task!!, ActionType.DELETE)
                 } else {
@@ -111,11 +111,12 @@ class TaskDetailActivity : AppCompatActivity() {
                 }
                 true
             }
+
             else -> super.onOptionsItemSelected(item)
         }
     }
 
-    private fun returnAction(task: Task, actionType: ActionType){
+    private fun returnAction(task: Task, actionType: ActionType) {
         val intent = Intent()
             .apply {
                 val taskAction = TaskAction(task, actionType.name)
@@ -126,7 +127,7 @@ class TaskDetailActivity : AppCompatActivity() {
     }
 
     //função para mostrar uma messagem na tela
-    private fun showMessage(view: View, message:String){
+    private fun showMessage(view: View, message: String) {
         Snackbar.make(view, message, Snackbar.LENGTH_LONG)
             .setAction("Action", null)
             .show()

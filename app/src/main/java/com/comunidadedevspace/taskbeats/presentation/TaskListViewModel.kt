@@ -54,12 +54,10 @@ class TaskListViewModel(private val taskDao: TaskDao) : ViewModel() {
     }
 
     companion object {
-
         fun create(application: Application): TaskListViewModel {
             val dataBAseInstance = (application as TaskBeatsApplication).getAppDataBase()
             val dao = dataBAseInstance.taskDao()
             return TaskListViewModel(dao)
         }
     }
-
 }

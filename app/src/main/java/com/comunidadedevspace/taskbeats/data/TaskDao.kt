@@ -15,7 +15,7 @@ interface TaskDao {
     fun insert(task: Task)
 
     @Query("Select * from task")
-    fun getAllLiveData():LiveData<List<Task>>
+    fun getAllLiveData(): LiveData<List<Task>>
 
     //UPDATE NECESSARIO ENCONTRAR A TAREFA
 
@@ -28,7 +28,7 @@ interface TaskDao {
 
     //deleta um item
     @Query("delete from task WHERE id = :id")
-    fun deleteById(id:Int)
+    fun deleteById(id: Int)
 
 
 }

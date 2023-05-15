@@ -20,7 +20,6 @@ import java.io.Serializable
 
 class TaskListActivity : AppCompatActivity() {
 
-    //iniciar o layout depois para configurar quando não tiver nenhuma task
     private lateinit var ctnContent: LinearLayout
 
     //colocando a função de abrir o detalhe da task no adapter
@@ -32,7 +31,7 @@ class TaskListActivity : AppCompatActivity() {
         TaskListViewModel.create(application)
     }
 
-    //usando API android para atualizar a página
+    //usando API android para pegar resultado de outra página
     private val startForResult = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result: ActivityResult ->
@@ -48,11 +47,9 @@ class TaskListActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_task_list)
-        //para aparecer o toolbar
         setSupportActionBar(findViewById(R.id.toolbar))
 
-
-        //recuperando layout para quando não tiver nenhuma task
+        //recuperando layout
         ctnContent = findViewById(R.id.ctn_content)
 
         //recyclerview
@@ -66,29 +63,24 @@ class TaskListActivity : AppCompatActivity() {
             //null porque ainda não tem a tarefa criada
             openTaskListDetail(null)
         }
-
     }
 
     /* Colocar a inicialização do banco de dados no onStart() ajuda a evitar a exibição de uma
      tela vazia ou com dados ausentes quando a atividade é retomada após estar em segundo plano.*/
     override fun onStart() {
         super.onStart()
-
         listFromDateBase()
     }
 
-    private fun deleteAll(){
+    private fun deleteAll() {
         val taskAction = TaskAction(null, ActionType.DELETE_ALL.name)
         viewModel.execute(taskAction)
     }
 
-
-
     private fun listFromDateBase() {
-
         //Observer
         val listObserver = Observer<List<Task>> { listTasks ->
-            if(listTasks.isEmpty()){
+            if (listTasks.isEmpty()) {
                 ctnContent.visibility = View.VISIBLE
             } else {
                 ctnContent.visibility = View.GONE
