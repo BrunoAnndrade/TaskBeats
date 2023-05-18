@@ -20,6 +20,7 @@ import java.io.Serializable
 
 class TaskListActivity : AppCompatActivity() {
 
+    // layout pra colocar imagem de vazio, quando não tiver tarefas
     private lateinit var ctnContent: LinearLayout
 
     //colocando a função de abrir o detalhe da task no adapter
@@ -31,7 +32,7 @@ class TaskListActivity : AppCompatActivity() {
         TaskListViewModel.create(application)
     }
 
-    //usando API android para pegar resultado de outra página
+    //usando API android para pegar resultado de outra página (callback)
     private val startForResult = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result: ActivityResult ->
@@ -99,13 +100,12 @@ class TaskListActivity : AppCompatActivity() {
             .show()
     }
 
-    //Open new page
+    //Clicar em uma tarefa ja criada
     private fun onListItemClicked(task: Task) {
         openTaskListDetail(task)
     }
 
-    // essa tarefa pode existir. Então coloquei o null
-    // esse Task?=null é um default argument
+    // clicar em criar nova tarefa
     private fun openTaskListDetail(task: Task?) {
         val intent = TaskDetailActivity.start(this, task)
         startForResult.launch(intent)
@@ -132,7 +132,7 @@ class TaskListActivity : AppCompatActivity() {
 
 }
 
-//CRUD
+
 enum class ActionType {
     DELETE,
     DELETE_ALL,

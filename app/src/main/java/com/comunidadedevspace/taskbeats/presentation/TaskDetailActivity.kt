@@ -41,8 +41,7 @@ class TaskDetailActivity : AppCompatActivity() {
         //para aparecer o toolbar no taskDetail
         setSupportActionBar(findViewById(R.id.toolbar))
 
-        // Recuperando xml
-        // se não passar nenhuma tarefa o app vai dar um crash por isso requireNoteNull
+        //recuperando info do objeto task
         task = intent.getSerializableExtra(TASK_DETAIL_EXTRA) as Task?
 
         // Recuperando campo xml
@@ -70,14 +69,6 @@ class TaskDetailActivity : AppCompatActivity() {
                 showMessage(it, "Fields are required")
             }
         }
-
-
-        //  tvTitle = findViewById(R.id.tv_TaskTitleDetail)
-
-        // Setar a nova página na tela
-        // esse "?:" se não tiver o titilo da tarefa, vai a msg
-        // tvTitle.text = task?.title ?: "Adicione uma tarefa"
-
     }
 
     private fun addOrUpdateTask(
@@ -89,7 +80,6 @@ class TaskDetailActivity : AppCompatActivity() {
         val newTask = Task(id, title, description)
         returnAction(newTask, actionType)
     }
-
 
     // inflar meu XML(menu)
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
