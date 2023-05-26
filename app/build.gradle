@@ -36,9 +36,9 @@ android {
 dependencies {
 
     implementation 'androidx.core:core-ktx:1.7.0'
-
     implementation 'com.google.android.material:material:1.8.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
 
     def room_version = "2.4.1"
 
@@ -47,7 +47,6 @@ dependencies {
 
     def lifecycle_version = "2.5.1"
     def arch_version = "2.1.0"
-
 
     //By viewmodels
     implementation "androidx.activity:activity-ktx:1.6.1"
@@ -74,7 +73,6 @@ dependencies {
 
     // optional - Test helpers for LiveData
     testImplementation "androidx.arch.core:core-testing:$arch_version"
-
 
     // optional - Test helpers
     testImplementation "androidx.room:room-testing:$room_version"
