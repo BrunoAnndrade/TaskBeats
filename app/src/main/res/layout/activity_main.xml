@@ -6,6 +6,13 @@
     android:layout_height="match_parent"
     tools:context=".presentation.MainActivity">
 
+    <androidx.fragment.app.FragmentContainerView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/fragment_container_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:name="com.example.ExampleFragment" />
+
     <com.google.android.material.bottomappbar.BottomAppBar
         android:id="@+id/bottomAppBar"
         android:layout_width="match_parent"
