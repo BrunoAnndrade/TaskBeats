@@ -18,7 +18,6 @@ interface TaskDao {
     fun getAllLiveData(): LiveData<List<Task>>
 
     //UPDATE NECESSARIO ENCONTRAR A TAREFA
-
     @Update(onConflict = OnConflictStrategy.REPLACE)
     fun update(task: Task)
 
