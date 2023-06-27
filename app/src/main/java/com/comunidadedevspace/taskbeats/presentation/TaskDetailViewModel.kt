@@ -20,7 +20,6 @@ class TaskDetailViewModel(
         //ação do actiontype
         when (taskAction.ActionType) {
             ActionType.DELETE.name -> deleteById(taskAction.task!!.id)
-
             ActionType.CREATE.name -> insertIntoDataBase(taskAction.task!!)
             ActionType.UPDATE.name -> updateIntoDataBase(taskAction.task!!)
         }
@@ -46,6 +45,9 @@ class TaskDetailViewModel(
         }
     }
 
+
+    /*para utilizar viewmModel com by viewmodel e poder rotarcionar a tela sem perder o que foi
+    digitado*/
     companion object {
         fun getVMFactory(application: Application): ViewModelProvider.Factory {
             val dataBaseInstance = (application as TaskBeatsApplication).getAppDataBase()

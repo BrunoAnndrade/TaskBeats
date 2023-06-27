@@ -15,9 +15,7 @@ import kotlinx.coroutines.launch
 
 class TaskListViewModel(taskDao:TaskDao): ViewModel() {
 
-
     val taskListLiveData: LiveData<List<Task>> = taskDao.getAllLiveData()
-
 
     companion object {
         fun create(application: Application): TaskListViewModel {
