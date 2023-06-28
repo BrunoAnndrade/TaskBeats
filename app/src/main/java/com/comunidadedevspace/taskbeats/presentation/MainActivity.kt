@@ -46,6 +46,7 @@ class MainActivity : AppCompatActivity() {
 
         }
     }
+
     private fun openTaskListDetail() {
         val intent = TaskDetailActivity.start(this, null)
         startActivity(intent)
