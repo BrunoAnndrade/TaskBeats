@@ -84,7 +84,7 @@ class TaskDetailActivity : AppCompatActivity() {
         actionType: ActionType
     ) {
         val newTask = Task(id, title, description)
-        performAction(newTask, actionType)
+        executeTaskActionAndFinish(newTask, actionType)
     }
 
     // inflar meu XML(menu)
@@ -101,7 +101,7 @@ class TaskDetailActivity : AppCompatActivity() {
                 //So vai passar por esse código se existir uma tarefa
                 if (task != null) {
                     //return main activity com o resultado de delete
-                    performAction(task!!, ActionType.DELETE)
+                    executeTaskActionAndFinish(task!!, ActionType.DELETE)
                 } else {
                     showMessage(btnDone, "Item not found")
                 }
@@ -112,7 +112,7 @@ class TaskDetailActivity : AppCompatActivity() {
         }
     }
 
-    private fun performAction(task: Task, actionType: ActionType) {
+    private fun executeTaskActionAndFinish(task: Task, actionType: ActionType) {
         val taskAction = TaskAction(task, actionType.name)
         viewModel.execute(taskAction)
         finish()
