@@ -46,8 +46,8 @@ class TaskDetailViewModel(
     }
 
 
-    /*  Para utilizar viewmModel com by viewmodel e poder rotarcionar a tela sem perder o que foi
-    digitado */
+    /*para utilizar viewmModel com by viewmodel e poder rotarcionar a tela sem perder o que foi
+    digitado*/
     companion object {
         fun getVMFactory(application: Application): ViewModelProvider.Factory {
             val dataBaseInstance = (application as TaskBeatsApplication).getAppDataBase()
