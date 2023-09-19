@@ -12,22 +12,22 @@ import androidx.room.Update
 interface TaskDao {
     // Se já tiver a tarefa criada ele vai apenas mudar (editar)
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(task: Task)
+    suspend fun insert(task: Task)
 
     @Query("Select * from task")
     fun getAllLiveData(): LiveData<List<Task>>
 
     //UPDATE NECESSARIO ENCONTRAR A TAREFA
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    fun update(task: Task)
+    suspend fun update(task: Task)
 
     //deleta todos
     @Query("delete from task")
-    fun deleteAll()
+    suspend fun deleteAll()
 
     //deleta um item
     @Query("delete from task WHERE id = :id")
-    fun deleteById(id: Int)
+    suspend fun deleteById(id: Int)
 
 
 }
