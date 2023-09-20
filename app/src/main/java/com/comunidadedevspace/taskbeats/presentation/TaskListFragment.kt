@@ -9,7 +9,10 @@ import android.widget.LinearLayout
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.comunidadedevspace.taskbeats.R
-import com.comunidadedevspace.taskbeats.data.Task
+import com.comunidadedevspace.taskbeats.data.local.Task
+import com.comunidadedevspace.taskbeats.data.remote.NewsResponse
+import com.comunidadedevspace.taskbeats.data.remote.RetrofitModule
+import okhttp3.Callback
 
 /**
  * A simple [Fragment] subclass.
@@ -20,6 +23,8 @@ class TaskListFragment : Fragment() {
 
     // layout pra colocar imagem de vazio, quando não tiver tarefas
     private lateinit var ctnContent: LinearLayout
+
+    private val retrofitModule = RetrofitModule
 
     //colocando a função de abrir o detalhe da task no adapter
     private val adapter: TaskListAdapter by lazy {
@@ -48,6 +53,9 @@ class TaskListFragment : Fragment() {
         val taskList: RecyclerView = view.findViewById(R.id.RecycleView_task_List)
         //atrelando xml recycleView + adapter
         taskList.adapter = adapter
+
+        val newsService = retrofitModule.createNewsService()
+
     }
 
     override fun onStart() {

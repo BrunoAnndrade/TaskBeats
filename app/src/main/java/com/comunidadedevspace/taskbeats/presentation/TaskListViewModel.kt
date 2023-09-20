@@ -4,12 +4,12 @@ import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.comunidadedevspace.taskbeats.TaskBeatsApplication
-import com.comunidadedevspace.taskbeats.data.Task
-import com.comunidadedevspace.taskbeats.data.TaskDao
+import com.comunidadedevspace.taskbeats.data.local.Task
+import com.comunidadedevspace.taskbeats.data.local.TaskDao
 
 
 
-class TaskListViewModel(taskDao:TaskDao): ViewModel() {
+class TaskListViewModel(taskDao: TaskDao): ViewModel() {
 
     val taskListLiveData: LiveData<List<Task>> = taskDao.getAllLiveData()
 

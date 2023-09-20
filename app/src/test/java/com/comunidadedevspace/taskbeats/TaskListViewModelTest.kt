@@ -1,7 +1,7 @@
 package com.comunidadedevspace.taskbeats
 
 
-import com.comunidadedevspace.taskbeats.data.TaskDao
+import com.comunidadedevspace.taskbeats.data.local.TaskDao
 import com.comunidadedevspace.taskbeats.presentation.TaskListViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Rule
