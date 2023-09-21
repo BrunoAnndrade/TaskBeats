@@ -32,6 +32,8 @@
             <ImageView
                 android:id="@+id/iv_news"
                 android:layout_width="80dp"
+                android:scaleType="centerCrop"
+                android:layout_marginEnd="8dp"
                 android:layout_height="80dp"
                 android:layout_gravity="end"
                 app:layout_constraintBottom_toBottomOf="parent"

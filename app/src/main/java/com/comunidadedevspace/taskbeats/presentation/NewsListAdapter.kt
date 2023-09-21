@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
+import coil.transform.RoundedCornersTransformation
 import com.comunidadedevspace.taskbeats.R
 import com.comunidadedevspace.taskbeats.data.local.News
 import com.comunidadedevspace.taskbeats.data.local.Task
@@ -57,7 +58,10 @@ class NewsListViewHolder(
         news:News,
     ) {
        newsTitle.text = news.title
-       imgUrl.load(news.imgUrl)
+       imgUrl.load(news.imgUrl){
+           //deixar img arredondada
+           transformations(RoundedCornersTransformation(12f))
+       }
 
     }
 
