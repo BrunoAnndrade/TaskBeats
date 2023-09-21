@@ -24,7 +24,6 @@ class TaskListFragment : Fragment() {
     // layout pra colocar imagem de vazio, quando não tiver tarefas
     private lateinit var ctnContent: LinearLayout
 
-    private val retrofitModule = RetrofitModule
 
     //colocando a função de abrir o detalhe da task no adapter
     private val adapter: TaskListAdapter by lazy {
@@ -54,7 +53,7 @@ class TaskListFragment : Fragment() {
         //atrelando xml recycleView + adapter
         taskList.adapter = adapter
 
-        val newsService = retrofitModule.createNewsService()
+
 
     }
 
