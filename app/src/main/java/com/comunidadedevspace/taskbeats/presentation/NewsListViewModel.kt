@@ -14,6 +14,7 @@ class NewsListViewModel(
 ):ViewModel() {
 
     private val _newsListLiveData = MutableLiveData<List<NewsDto>>()
+
     val newsListLiveData:LiveData<List<NewsDto>> = _newsListLiveData
 
 
