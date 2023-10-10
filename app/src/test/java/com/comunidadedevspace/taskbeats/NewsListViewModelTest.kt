@@ -30,7 +30,7 @@ class NewsListViewModelTest {
 
             //lista fake
             //GIVEN
-            val expected = listOf(
+            val expectedTop = listOf(
                 NewsDto(
                     id = "id1",
                     content = "content1",
@@ -38,17 +38,29 @@ class NewsListViewModelTest {
                     title = "title1"
                 )
             )
+            val expectedAll = listOf(
+                NewsDto(
+                    id = "id2",
+                    content = "content2",
+                    imageUrl = "imageUrl2",
+                    title = "title2"
+                )
+            )
 
-            val response = NewsResponse(data = expected, category = "tech")
-            whenever(service.fetchNews()).thenReturn(response)
+
+
+            val topResponse = NewsResponse(data = expectedTop)
+            val allResponse = NewsResponse(data = expectedAll)
+            whenever(service.fetchTopNews()).thenReturn(topResponse)
+            whenever(service.fetchAllNews()).thenReturn(allResponse)
 
             //WHEN
             underTest = NewsListViewModel(service)
+            val result = underTest.newsListLiveData.getOrAwaitValue()
 
 
             //THEN
-            val result = underTest.newsListLiveData.getOrAwaitValue()
-            assert(result == expected)
+            assert(result == expectedTop + expectedAll)
 
             
 

@@ -28,8 +28,9 @@ class NewsListViewModel(
 
             // caso tenha um erro de internet o app nao vai crashar
             try {
-                val response = newsService.fetchNews()
-                _newsListLiveData.value = response.data
+                val topNews = newsService.fetchTopNews().data
+                val allNews = newsService.fetchAllNews().data
+                _newsListLiveData.value = topNews + allNews
 
             } catch (ex: Exception){
                 ex.printStackTrace()
