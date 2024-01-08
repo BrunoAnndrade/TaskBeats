@@ -28,8 +28,7 @@ proporcionando uma experiência abrangente de desenvolvimento.
 - FindViewById para recuperar components de UI
 - String resource para concatenação de textos
 * Armazenamento de dados local
-    * Room DataBase
-    * okHttp
+    - Room DataBase     
 * Consumo de API de noticias
    - Retrofit
 * Testes Unitários
