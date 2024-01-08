@@ -31,8 +31,7 @@ proporcionando uma experiência abrangente de desenvolvimento.
     * Room DataBase
     * okHttp
 * Consumo de API de noticias
-* Bibliotecas
-   * Retrofit
+   - Retrofit
 * Testes Unitários
    - JUnit
    - Mockito
