@@ -27,6 +27,7 @@ proporcionando uma experiência abrangente de desenvolvimento.
 - Intent Explicita para abrir fragments
 - FindViewById para recuperar components de UI
 - String resource para concatenação de textos
+- Placeholder de estado vazio
 * Armazenamento de dados local
     - Room DataBase     
 * Consumo de API de noticias
