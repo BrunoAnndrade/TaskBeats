@@ -35,6 +35,11 @@ proporcionando uma experiência abrangente de desenvolvimento.
 * Testes Unitários
    - JUnit
    - Mockito
+ 
+## Funcionalidades Implementadas
+* Criação de lista de tarefas
+* Vizualizar principais noticias 
+  
 
 
 ### TO DO
