@@ -5,14 +5,13 @@ import com.comunidadedevspace.taskbeats.data.local.TaskDao
 import com.comunidadedevspace.taskbeats.presentation.ActionType
 import com.comunidadedevspace.taskbeats.presentation.TaskAction
 import com.comunidadedevspace.taskbeats.presentation.TaskDetailViewModel
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
 
-@OptIn(ExperimentalCoroutinesApi::class)
 class TaskDetailViewModelTest {
 
     @get:Rule
